@@ -413,7 +413,10 @@ export function AppShell() {
         </div>
       </footer>
       <p className="mx-auto max-w-[78rem] px-[clamp(1.25rem,4vw,3.5rem)] pb-8 text-xs text-muted">
-        {siteCopy.disclaimer}
+        {siteCopy.disclaimer}{" "}
+        <a href="/admin" className="text-muted underline-offset-2 hover:text-fg hover:underline">
+          Spotlight intake
+        </a>
       </p>
     </div>
   );

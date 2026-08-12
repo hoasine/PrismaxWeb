@@ -9,8 +9,8 @@ export const ROLE_LEVEL_ORDER = [
   "Exploratory",
   "Stabilized",
   "Navigational",
-  "PrismaX Vanguard",
   "Groundbreaker",
+  "PrismaX Vanguard",
 ] as const;
 
 export type RoleLevel = (typeof ROLE_LEVEL_ORDER)[number];

@@ -3,15 +3,18 @@
 import { useEffect, useMemo, useState, type ReactNode } from "react";
 import { XPostCard } from "@/components/XPostCard";
 import {
-  honorSections,
+  honorSections as baseHonorSections,
   type HonorCycle,
   type HonorSection,
 } from "@/data/spotlights";
+import { withHonorExtra } from "@/lib/honorMerge";
 import {
   ROLE_LEVEL_ORDER,
   roleLevelNumber,
   type RoleLevel,
 } from "@/lib/progression";
+
+const honorSections = withHonorExtra(baseHonorSections);
 
 const programMeta: Record<HonorSection["kind"], { className: string; icon: ReactNode }> = {
   progression: {
@@ -212,7 +215,9 @@ const DEFAULT_TRACK_ID = honorSections[0]?.id ?? "validation";
 
 export function HonorExplorer() {
   const [activeId, setActiveId] = useState<string>(DEFAULT_TRACK_ID);
-  const [cycleId, setCycleId] = useState<string>("all");
+  const [cycleId, setCycleId] = useState<string>(() =>
+    honorSections[0] ? latestCycleId(honorSections[0]) : "",
+  );
   const [query, setQuery] = useState("");
 
   const activeSection =
@@ -230,8 +235,7 @@ export function HonorExplorer() {
     if (!section) return;
     setActiveId(id);
     setQuery("");
-    // Progression: always open latest month only
-    setCycleId(section.kind === "progression" ? latestCycleId(section) : "all");
+    setCycleId(latestCycleId(section));
     window.history.replaceState(null, "", `#${id}`);
     if (opts?.scroll) {
       requestAnimationFrame(() => {
@@ -262,23 +266,20 @@ export function HonorExplorer() {
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  // Ensure progression never stays on "all"
+  // Always keep a valid selected cycle (latest if missing)
   useEffect(() => {
-    if (!activeSection || activeSection.kind !== "progression") return;
-    if (cycleId === "all" || !sortedCycles.some((c) => c.id === cycleId)) {
-      setCycleId(sortedCycles[0]?.id ?? "all");
+    if (!sortedCycles.length) return;
+    if (!sortedCycles.some((c) => c.id === cycleId)) {
+      setCycleId(sortedCycles[0]!.id);
     }
-  }, [activeSection, cycleId, sortedCycles]);
+  }, [cycleId, sortedCycles]);
 
   const filteredCycles = useMemo(() => {
-    let cycles = sortedCycles;
-    if (isProgression || cycleId !== "all") {
-      cycles = cycles.filter((c) => c.id === cycleId);
-    }
-    return cycles
+    return sortedCycles
+      .filter((c) => c.id === cycleId)
       .map((c) => filterCycle(c, query))
       .filter((c): c is HonorCycle => c != null);
-  }, [sortedCycles, cycleId, query, isProgression]);
+  }, [sortedCycles, cycleId, query]);
 
   const resultCount = filteredCycles.reduce((n, c) => {
     if (c.entries) return n + c.entries.length;
@@ -290,7 +291,8 @@ export function HonorExplorer() {
     );
   }, 0);
 
-  const filtersActive = Boolean(query.trim()) || (!isProgression && cycleId !== "all");
+  const latestId = sortedCycles[0]?.id;
+  const filtersActive = Boolean(query.trim()) || (Boolean(latestId) && cycleId !== latestId);
 
   if (!activeSection || !activeMeta) return null;
 
@@ -360,15 +362,6 @@ export function HonorExplorer() {
               {isProgression ? "Select month" : "Select date"}
             </p>
             <div className="flex flex-wrap items-center gap-2">
-              {!isProgression && (
-                <button
-                  type="button"
-                  onClick={() => setCycleId("all")}
-                  className={`cycle-pill ${cycleId === "all" ? "is-active" : ""}`}
-                >
-                  All
-                </button>
-              )}
               {sortedCycles.map((c, i) => {
                 const selected = c.id === cycleId;
                 return (
@@ -403,7 +396,7 @@ export function HonorExplorer() {
                   type="button"
                   className="btn btn-secondary !py-2"
                   onClick={() => {
-                    setCycleId(isProgression ? (sortedCycles[0]?.id ?? "all") : "all");
+                    setCycleId(sortedCycles[0]?.id ?? "");
                     setQuery("");
                   }}
                 >
@@ -431,14 +424,6 @@ export function HonorExplorer() {
                   <ProgressionCycle cycle={cycle} />
                 ) : (
                   <article>
-                    {cycleId === "all" && (
-                      <p
-                        className="mb-4 text-[1.05rem] font-semibold text-fg"
-                        style={{ fontFamily: "var(--font-display), sans-serif" }}
-                      >
-                        {cycle.dateLabel}
-                      </p>
-                    )}
                     {cycle.entries && <EntryGrid entries={cycle.entries} />}
                   </article>
                 )}
