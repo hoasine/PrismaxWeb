@@ -1,14 +1,17 @@
+"use client";
+
+import { AdminGate, AdminLayout } from "@/components/AdminShell";
 import { SpotlightIntake } from "@/components/SpotlightIntake";
 
 export default function AdminPage() {
   return (
-    <div className="min-h-full">
-      <header className="border-b border-[rgba(180,140,255,0.12)] px-[clamp(1.25rem,4vw,3.5rem)] py-4">
-        <a href="/" className="text-sm text-muted transition hover:text-fg">
-          ← Back to Hall of Honor
-        </a>
-      </header>
-      <SpotlightIntake />
-    </div>
+    <AdminLayout active="intake">
+      <AdminGate
+        title="Spotlight intake"
+        description="Paste Discord / X highlight lists here instead of sending them to Cursor. Protected by admin secret."
+      >
+        {(secret) => <SpotlightIntake secret={secret} />}
+      </AdminGate>
+    </AdminLayout>
   );
 }

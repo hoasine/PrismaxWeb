@@ -71,9 +71,7 @@ function EntryEditor({
   );
 }
 
-export function SpotlightIntake() {
-  const [secret, setSecret] = useState("");
-  const [unlocked, setUnlocked] = useState(false);
+export function SpotlightIntake({ secret }: { secret: string }) {
   const [dateKey, setDateKey] = useState(todayKey);
   const [paste, setPaste] = useState("");
   const [batches, setBatches] = useState<ParsedHighlightBatch[]>([]);
@@ -85,24 +83,6 @@ export function SpotlightIntake() {
     if (!batches.length) return null;
     return toHonorCycles(batches, dateKeyToLabel(dateKey), dateKey);
   }, [batches, dateKey]);
-
-  const unlock = async () => {
-    setError(null);
-    if (!secret.trim()) {
-      setError("Enter admin secret.");
-      return;
-    }
-    try {
-      const res = await fetch(`/api/admin/spotlights?secret=${encodeURIComponent(secret)}`);
-      if (!res.ok) {
-        setError("Wrong admin secret.");
-        return;
-      }
-      setUnlocked(true);
-    } catch {
-      setError("Could not verify secret.");
-    }
-  };
 
   const runParse = () => {
     setError(null);
@@ -182,45 +162,6 @@ export function SpotlightIntake() {
     }
   };
 
-  if (!unlocked) {
-    return (
-      <section className="px-[clamp(1.25rem,4vw,3.5rem)] py-[clamp(2.75rem,6vw,4.5rem)]">
-        <div className="mx-auto max-w-lg">
-          <p className="m-0 text-[0.72rem] font-medium uppercase tracking-[0.16em] text-purple">
-            Admin
-          </p>
-          <h1
-            className="mt-2.5 text-[clamp(1.7rem,3.4vw,2.4rem)] font-semibold tracking-[-0.02em]"
-            style={{ fontFamily: "var(--font-display), sans-serif" }}
-          >
-            Spotlight intake
-          </h1>
-          <p className="mt-3 text-muted">
-            Paste Discord / X highlight lists here instead of sending them to Cursor. Protected by
-            admin secret.
-          </p>
-          <label className="mt-6 block text-sm text-muted">
-            Admin secret
-            <input
-              type="password"
-              value={secret}
-              onChange={(e) => setSecret(e.target.value)}
-              onKeyDown={(e) => {
-                if (e.key === "Enter") unlock();
-              }}
-              className="mt-2 w-full rounded-[var(--radius-pill)] border border-[rgba(180,140,255,0.18)] bg-[rgba(0,0,0,0.35)] px-4 py-2.5 text-sm text-fg outline-none focus:border-[rgba(180,140,255,0.45)]"
-              placeholder="ADMIN_SECRET"
-            />
-          </label>
-          {error && <p className="mt-3 text-sm text-[#ffb4b4]">{error}</p>}
-          <button type="button" className="btn btn-brand mt-5" onClick={() => void unlock()}>
-            Unlock
-          </button>
-        </div>
-      </section>
-    );
-  }
-
   return (
     <section className="px-[clamp(1.25rem,4vw,3.5rem)] py-[clamp(2.75rem,6vw,4.5rem)]">
       <div className="mx-auto max-w-[78rem]">
@@ -286,7 +227,7 @@ export function SpotlightIntake() {
                 type="button"
                 className="btn btn-primary"
                 disabled={busy || !cycles}
-                onClick={publish}
+                onClick={() => void publish()}
               >
                 {busy ? "Publishing…" : "Publish to site"}
               </button>

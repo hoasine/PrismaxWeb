@@ -417,6 +417,13 @@ export function AppShell() {
         <a href="/admin" className="text-muted underline-offset-2 hover:text-fg hover:underline">
           Spotlight intake
         </a>
+        {" · "}
+        <a
+          href="/admin/manage"
+          className="text-muted underline-offset-2 hover:text-fg hover:underline"
+        >
+          Manage dates
+        </a>
       </p>
     </div>
   );
