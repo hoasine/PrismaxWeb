@@ -97,10 +97,43 @@ export const honorSections: HonorSection[] = [
       "Creators recognized for educational and creative content around Verify Quality and data standards.",
     cycles: [
       {
+        id: "val-2026-08-11",
+        dateLabel: "11/08/2026",
+        dateKey: "2026-08-11",
+        blurb: "Data Validation Day highlights from the latest recognition cycle.",
+        entries: [
+          {
+            author: "kabuda",
+            handle: "@kabuda112821",
+            url: "https://x.com/kabuda112821/status/2085207283689308367",
+          },
+          {
+            author: "Zephy",
+            handle: "@__Zephhy",
+            url: "https://x.com/__Zephhy/status/2085638287138685097",
+          },
+          {
+            author: "0x_Elfawzan",
+            handle: "@ox_elfawzan",
+            url: "https://x.com/ox_elfawzan/status/2084391732314325004",
+          },
+          {
+            author: "jajalabsu Gooner #6 PrismaX",
+            handle: "@dapretty_taurus",
+            url: "https://x.com/dapretty_taurus/status/2086047749389320229",
+          },
+          {
+            author: "RomRom",
+            handle: "@HoaTranRom",
+            url: "https://x.com/HoaTranRom/status/2085313452609061040",
+          },
+        ],
+      },
+      {
         id: "val-2026-08-04",
         dateLabel: "04/08/2026",
         dateKey: "2026-08-04",
-        blurb: "Data Validation Day highlights from the latest recognition cycle.",
+        blurb: "Data Validation Day highlights from the previous recognition cycle.",
         entries: [
           {
             author: "Aysho-M",
@@ -484,10 +517,43 @@ export const honorSections: HonorSection[] = [
       "Operators and creators highlighted for strong Teleoperation Day content.",
     cycles: [
       {
+        id: "tele-2026-08-11",
+        dateLabel: "11/08/2026",
+        dateKey: "2026-08-11",
+        blurb: "Latest Teleoperation Day highlights.",
+        entries: [
+          {
+            author: "Cao Thần Quang",
+            handle: "@caothanquang369",
+            url: "https://x.com/caothanquang369/status/2085738336870887921",
+          },
+          {
+            author: "GTA",
+            handle: "@PawanKumar67103",
+            url: "https://x.com/PawanKumar67103/status/2084507459688047038",
+          },
+          {
+            author: "Bili Dz 24/7",
+            handle: "@Bili_6_",
+            url: "https://x.com/Bili_6_/status/2085668706391064693",
+          },
+          {
+            author: "KingOPw3",
+            handle: "@kingop0007",
+            url: "https://x.com/kingop0007/status/2084536639813034203",
+          },
+          {
+            author: "Alishka",
+            handle: "@alishka_kr",
+            url: "https://x.com/alishka_kr/status/2085417477102518456",
+          },
+        ],
+      },
+      {
         id: "tele-2026-08-04",
         dateLabel: "04/08/2026",
         dateKey: "2026-08-04",
-        blurb: "Latest Teleoperation Day highlights.",
+        blurb: "Teleoperation Day highlights from the previous cycle.",
         entries: [
           {
             author: "Ravondir",
@@ -520,7 +586,7 @@ export const honorSections: HonorSection[] = [
         id: "tele-2026-07-27",
         dateLabel: "27/07/2026",
         dateKey: "2026-07-27",
-        blurb: "Teleoperation Day highlights from the previous cycle.",
+        blurb: "Teleoperation Day highlights from an earlier cycle.",
         entries: [
           {
             author: "JohnNguyen",
